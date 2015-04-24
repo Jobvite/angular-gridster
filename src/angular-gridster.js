@@ -2086,6 +2086,15 @@
 
 					scope.$broadcast('gridster-item-initialized', item);
 
+					//Autoheight for widgets 
+					scope.$watch(function () {
+						return $el.children()[0].offsetHeight;
+					}, function(newVal, oldVal) {
+						if (newVal !== oldVal) {
+							item.sizeY = gridster.pixelsToRows(newVal+gridster.margins[0], true);
+						}
+					});
+
 					return scope.$on('$destroy', function() {
 						try {
 							resizable.destroy();
