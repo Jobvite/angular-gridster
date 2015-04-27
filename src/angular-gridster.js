@@ -51,6 +51,7 @@
 
 			this.resizable = angular.extend({}, gridsterConfig.resizable || {});
 			this.draggable = angular.extend({}, gridsterConfig.draggable || {});
+			this.movable = angular.extend({}, gridsterConfig.movable || {});
 
 			var flag = false;
 			this.layoutChanged = function() {
@@ -111,6 +112,11 @@
 				if (options.resizable) {
 					angular.extend(this.resizable, options.resizable);
 					delete(options.resizable);
+				}
+
+				if (options.movable) {
+				    angular.extend(this.movable, options.movable);
+				    delete(options.movable);
 				}
 
 				angular.extend(this, options);
@@ -1509,6 +1515,12 @@
 						item.row = row;
 						item.col = col;
 					}
+
+					if (gridster.movable && gridster.movable.canMove && !gridster.movable.canMove(event, $el, item)) {
+					    item.row = originalRow;
+					    item.col = originalCol;
+					}
+
 					gridster.movingItem = null;
 					item.setPosition(item.row, item.col);
 
